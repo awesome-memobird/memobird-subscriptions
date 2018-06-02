@@ -1,0 +1,3 @@
+# min	hour	                day	month	weekday	command
+0       {{getv "week_hour"}}    *   *       1-5     mb-umbrella; mb-qod
+0       {{getv "weekend_hour"}} *   *       Sat,Sun mb-umbrella; mb-qod

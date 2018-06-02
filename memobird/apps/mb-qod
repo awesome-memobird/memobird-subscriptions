@@ -1,0 +1,22 @@
+#!/usr/bin/env python3
+#! -*- coding: utf-8 -*-
+import datetime
+import random
+
+from memobird.libs import bird
+from memobird.libs import log
+from memobird.libs import they_said_so, qod
+
+ 
+def main():
+    random.seed()
+    # qod = they_said_so.fetch_qod()
+    q = qod.fetch_qod()
+    bird.print_notice(title=q.title,
+                      body="{quote}\n"
+                            "\n"
+                            "{author:>32}".format(**q._asdict()))
+
+
+if __name__ == '__main__':
+    main()

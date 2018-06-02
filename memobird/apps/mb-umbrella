@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+#! -*- coding: utf-8 -*-
+import os
+import json
+import logging
+import random
+
+from memobird.libs import http
+from memobird.libs import bird
+from memobird.libs import log
+
+SERVER = 'https://api.caiyunapp.com/v2'
+KEY=os.getenv('CAIYUN_TOKEN')
+POS=os.getenv('CAIYUN_LOCATION')
+REALTIME = SERVER + '/' + KEY + '/' + POS + '/realtime.json'
+RAIN_CONS = ['SNOW', 'RAIN']
+
+def get_weather():
+    return http.fetch_json(REALTIME)
+
+def is_rain(weather):
+    return weather['result']['skycon'] in RAIN_CONS
+        
+
+def main():
+    weather = get_weather()
+    if not is_rain(weather):
+        logging.info("No rain")
+        return
+    logging.info("Raining")
+    bird.print_notice(title="It's Raining!",
+        body="Temperature: {temperature}\n"
+             "Local Intensity: {precipitation[local][intensity]}\n"
+             "\n"
+             "Nearest Distance: {precipitation[nearest][distance]}\n"
+             "Nearest Intensity: {precipitation[nearest][intensity]}\n"
+             "".format(**weather['result']))
+
+if __name__ == '__main__':
+    main()
